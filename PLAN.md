@@ -71,7 +71,7 @@ The SKILL eliminates the client-side editor and runtime Markdown parsing. **Clau
 
 Create a canonical HTML template that the SKILL instructs Claude to populate:
 
-- [ ] Create `<head>` with embedded `<style>` block: brand colors, typography, heading styles, table styles, print rules.
+- [x] Create `<head>` with embedded `<style>` block: brand colors, typography, heading styles, table styles, print rules.
 - [ ] Add `@page { size: letter; margin: 0; }` and print-specific rules.
 - [ ] Wire H2 background and page decoration via base64 data-URIs.
 - [ ] Add conditional Mermaid CDN `<script>` tag (only when mermaid blocks are present).

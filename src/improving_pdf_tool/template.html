@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TITLE}}</title>
+    <style>
+        :root {
+            --improving-blue: #0054a6;
+            --improving-teal: #0097a7;
+            --improving-light-blue: #e8f4fc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #444;
+            background: white;
+        }
+
+        /* Base H1 style (fallback) */
+        .content h1 {
+            color: var(--improving-blue);
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin: 0 0 1rem 0;
+        }
+
+        /* Document title (H1) - large bold blue */
+        .content .doc-title {
+            color: var(--improving-blue);
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin: 0 0 0.25rem 0;
+            text-transform: none;
+        }
+
+        /* Subtitle (first H2 after H1) - teal tagline, overrides block styling */
+        .content .doc-subtitle {
+            color: var(--improving-teal) !important;
+            font-size: 1.25rem !important;
+            font-weight: 400 !important;
+            margin: 0 0 1.5rem 0 !important;
+            text-transform: none !important;
+            background: none !important;
+            background-image: none !important;
+            padding: 0 !important;
+            letter-spacing: normal !important;
+        }
+
+        /* Section headers (H2) - gradient background image, stretched horizontally, tiled vertically */
+        .content h2 {
+            position: relative;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            margin: 1.5rem 0 0.75rem 0;
+            padding: 0.9rem 1.125rem 0.9rem 1.125rem;
+            /* H2 background image will be wired via base64 data-URI */
+            background-color: var(--improving-blue);
+            background-repeat: repeat-y;
+            background-size: 100% auto;
+            background-position: left top;
+        }
+
+        .content h3 {
+            color: var(--improving-teal);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-top: 1.25rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .content h4 {
+            color: #444;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-top: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .content p {
+            color: #444;
+            font-size: 0.75rem;
+            line-height: 1.7;
+            margin-bottom: 0.75rem;
+            text-align: left;
+        }
+
+        .content ul, .content ol {
+            margin-left: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .content li {
+            color: #444;
+            font-size: 0.75rem;
+            line-height: 1.6;
+            margin-bottom: 0.4rem;
+        }
+
+        .content li strong {
+            color: #333;
+        }
+
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.7rem;
+        }
+
+        .content th {
+            background-color: var(--improving-blue);
+            color: white;
+            padding: 0.5rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .content td {
+            padding: 0.4rem 0.5rem;
+            border-bottom: 1px solid #e5e5e5;
+            color: #444;
+        }
+
+        .content tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .content code {
+            background-color: #f4f4f4;
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+        }
+
+        .content pre {
+            background-color: #f4f4f4;
+            padding: 0.75rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.65rem;
+            margin: 0.75rem 0;
+        }
+
+        .content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .content blockquote {
+            border-left: 3px solid var(--improving-teal);
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #666;
+            font-style: italic;
+        }
+
+        .content hr {
+            border: none;
+            border-top: 1px solid #e5e5e5;
+            margin: 1.5rem 0;
+        }
+
+        .content .mermaid {
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .content .mermaid svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Body structure will be added in subsequent steps -->
+    <div class="content">
+        {{CONTENT}}
+    </div>
+</body>
+</html>
