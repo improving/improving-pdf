@@ -83,7 +83,7 @@ Create a canonical HTML template that the SKILL instructs Claude to populate:
 
 Create the core `generator.py` and `cli.py` modules:
 
-- [ ] Implement `generator.py`: accept HTML file path, launch headless Chromium via Playwright, load the HTML.
+- [x] Implement `generator.py`: accept HTML file path, launch headless Chromium via Playwright, load the HTML.
 - [ ] Add Mermaid wait logic: poll for `[data-processed]` attributes or use a timeout before PDF capture.
 - [ ] Call `page.pdf()` with `format="Letter"`, `print_background=True`, zero margins (handled by CSS).
 - [ ] Implement `cli.py` with argparse: `improving-pdf input.html -o output.pdf`.
