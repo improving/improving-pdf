@@ -183,6 +183,56 @@
             height: auto;
         }
 
+        /* Screen preview styles */
+        @media screen {
+            body {
+                background: #e5e7eb;
+                padding: 2rem 0;
+            }
+            .screen-page {
+                max-width: 8.5in;
+                margin: 0 auto 2rem auto;
+                background: white;
+                box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+                position: relative;
+                overflow: hidden;
+            }
+            .screen-header img, .screen-footer img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+            .screen-content {
+                padding: 1.5rem 2.5rem;
+            }
+            .page-bg-decoration-screen {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 200px;
+                background-image: url('{{BG_DECORATION_IMG}}');
+                background-repeat: repeat-x;
+                background-position: left bottom;
+                background-size: auto 100%;
+                opacity: 0.5;
+                pointer-events: none;
+                z-index: 1;
+            }
+            .screen-footer {
+                position: relative;
+                z-index: 2;
+            }
+            .screen-content-wrapper {
+                position: relative;
+                z-index: 3;
+            }
+            /* Hide print-only elements on screen */
+            .print-table { display: none; }
+            .print-footer { display: none; }
+            .page-bg-decoration-print { display: none; }
+        }
+
         /* Print styles */
         @media print {
             @page {
@@ -265,6 +315,22 @@
     {{MERMAID_SCRIPT}}
 </head>
 <body>
+    <!-- Screen Preview (visible only on screen, hidden when printing) -->
+    <div class="screen-page">
+        <div class="screen-header">
+            <img src="{{HEADER_IMG}}" alt="Header">
+        </div>
+        <div class="screen-content-wrapper">
+            <div class="screen-content content">
+                {{CONTENT}}
+            </div>
+        </div>
+        <div class="screen-footer">
+            <img src="{{FOOTER_IMG}}" alt="Footer">
+        </div>
+        <div class="page-bg-decoration-screen"></div>
+    </div>
+
     <!-- Print Layout (table-based for repeating header, fixed footer) -->
     <table class="print-table">
         <thead>
