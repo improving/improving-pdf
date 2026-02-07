@@ -151,7 +151,7 @@ Create the `/release` Claude command (`.windsurf/workflows/release.md`):
 - [x] Verify Mermaid diagrams render (if present).
 - [x] Verify background decoration appears at page bottom.
 - [x] Test installed CLI: `improving-pdf test/sample-input.md -o test/result.pdf`.
-- [ ] Test self-bootstrap flow: fresh venv → SKILL triggers install → generates PDF.
+- [x] Test self-bootstrap flow: fresh venv → SKILL triggers install → generates PDF.
 - [ ] Verify Playwright output matches manual Chrome Print to PDF.
 - [ ] Test `/release` workflow: bump a patch version, verify tag and GitHub release are created.
 
