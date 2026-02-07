@@ -223,6 +223,15 @@
                 position: relative;
                 z-index: 2;
             }
+            .footer-copyright {
+                position: absolute;
+                bottom: 8px;
+                left: 16px;
+                font-size: 9px;
+                color: var(--improving-blue);
+                font-family: 'Segoe UI', Arial, sans-serif;
+                z-index: 3;
+            }
             .screen-content-wrapper {
                 position: relative;
                 z-index: 3;
@@ -268,6 +277,15 @@
                 left: 0;
                 width: 100%;
                 z-index: 2;
+            }
+            .print-footer .footer-copyright {
+                position: absolute;
+                bottom: 8px;
+                left: 16px;
+                font-size: 9px;
+                color: var(--improving-blue);
+                font-family: 'Segoe UI', Arial, sans-serif;
+                z-index: 3;
             }
             .print-footer img {
                 width: 100%;
@@ -329,6 +347,7 @@
         </div>
         <div class="screen-footer">
             <img src="{{FOOTER_IMG}}" alt="Footer">
+            <span class="footer-copyright">© {{YEAR}} Improving</span>
         </div>
         <div class="page-bg-decoration-screen"></div>
     </div>
@@ -349,6 +368,7 @@
     <!-- Fixed footer appears at bottom of every printed page -->
     <div class="print-footer">
         <img src="{{FOOTER_IMG}}" alt="Footer">
+        <span class="footer-copyright">© {{YEAR}} Improving</span>
     </div>
 
     <!-- Background decoration for print (fixed at bottom of each page, under footer) -->

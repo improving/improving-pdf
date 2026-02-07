@@ -6,6 +6,7 @@ import re
 import subprocess
 import sys
 import tempfile
+from datetime import datetime
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
@@ -117,6 +118,7 @@ def _render_template(html_content: str, title: str = "Document") -> str:
     mermaid_script = MERMAID_SCRIPT_BLOCK if has_mermaid else ""
 
     result = template.replace("{{TITLE}}", title)
+    result = result.replace("{{YEAR}}", str(datetime.now().year))
     result = result.replace("{{CONTENT}}", html_content)
     result = result.replace("{{HEADER_IMG}}", HEADER_IMG)
     result = result.replace("{{FOOTER_IMG}}", FOOTER_IMG)
