@@ -123,7 +123,7 @@ Package the tool for `pip install` from GitHub:
 ### Phase 6: Handle Edge Cases & Refinements
 
 - [x] Verify page-break rules for long documents: `page-break-inside: avoid` on paragraphs, list items, tables, code blocks; `page-break-after: avoid` on headings.
-- [ ] Handle no-content fallback: SKILL prompts for Markdown if none provided.
+- [x] Handle no-content fallback: SKILL prompts for Markdown if none provided.
 - [ ] Handle `![alt](url)` image references in Markdown → `<img>` tags; note external URLs must be accessible.
 - [ ] Optional: support TOC generation from headings if user requests.
 - [ ] Ensure SKILL handles being invoked repeatedly in one conversation.
