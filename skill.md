@@ -69,3 +69,29 @@ The template contains these placeholders that must be replaced:
 | `{{MERMAID_SCRIPT}}` | The mermaid.js `<script>` block if the content contains mermaid diagrams, or empty string if not. |
 
 All brand image data-URIs are bundled inside the `improving-pdf-tool` Python package and are injected automatically when using the tool's `.md` input mode.
+
+## Output Format
+
+There are two ways to produce the final PDF:
+
+### Option A: Direct `.md` Input (Preferred)
+
+Save the user's Markdown content to a `.md` file, then invoke the tool directly:
+
+```bash
+improving-pdf document.md -o document.pdf
+```
+
+The tool handles everything: Markdown → HTML conversion, template assembly, brand image injection, mermaid rendering, and PDF generation.
+
+### Option B: Manual `.html` Input
+
+If you need more control (e.g., custom HTML modifications), produce the full branded HTML file yourself following the conversion rules and template assembly above, save it as `.html`, then invoke:
+
+```bash
+improving-pdf document.html -o document.pdf
+```
+
+### Output
+
+The tool writes the PDF directly to the specified output path. Provide the user with the full path to the generated PDF file.
