@@ -3,6 +3,8 @@
 import importlib.resources
 import os
 import re
+import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
@@ -10,6 +12,29 @@ from playwright.sync_api import sync_playwright
 
 
 MERMAID_TIMEOUT_MS = 10000
+
+
+def _ensure_chromium_installed() -> None:
+    """Check if Playwright's Chromium is installed; install it if missing.
+
+    Runs 'playwright install chromium' as a subprocess if the browser
+    executable cannot be found.
+    """
+    try:
+        from playwright._impl._driver import compute_driver_executable
+        driver = compute_driver_executable()
+        result = subprocess.run(
+            [str(driver), "install", "--dry-run", "chromium"],
+            capture_output=True, text=True,
+        )
+        if result.returncode != 0:
+            raise FileNotFoundError
+    except Exception:
+        print("Chromium not found. Installing via Playwright...", file=sys.stderr)
+        subprocess.check_call(
+            [sys.executable, "-m", "playwright", "install", "chromium"]
+        )
+        print("Chromium installed successfully.", file=sys.stderr)
 
 
 def _wait_for_mermaid(page) -> None:
@@ -208,6 +233,8 @@ def html_to_pdf(html_path: str, pdf_path: str) -> str:
         raise FileNotFoundError(f"HTML file not found: {html_path}")
 
     file_url = Path(html_path).as_uri()
+
+    _ensure_chromium_installed()
 
     with sync_playwright() as p:
         browser = p.chromium.launch()

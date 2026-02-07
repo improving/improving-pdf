@@ -88,7 +88,7 @@ Create the core `generator.py` and `cli.py` modules:
 - [x] Call `page.pdf()` with `format="Letter"`, `print_background=True`, zero margins (handled by CSS).
 - [x] Implement `cli.py` with argparse: `improving-pdf input.html -o output.pdf`.
 - [x] Add optional `.md` input mode: convert Markdown using the embedded template, then render to PDF.
-- [ ] Add auto-install of Chromium on first run (`playwright install chromium` if missing).
+- [x] Add auto-install of Chromium on first run (`playwright install chromium` if missing).
 
 ### Phase 4: Define the SKILL Instructions
 
