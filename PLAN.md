@@ -145,11 +145,11 @@ Create the `/release` Claude command (`.windsurf/workflows/release.md`):
 - [x] Create `test/sample-input.md` with the sample content from `loadSampleContent()` in the current file.
 - [x] Generate PDF from sample content and compare side-by-side with current tool's output.
 - [x] Verify header and footer appear on every printed page.
-- [ ] Verify H2 gradient background renders correctly.
-- [ ] Verify brand colors match (`#0054a6`, `#0097a7`).
-- [ ] Verify page breaks don't split headings from their content.
-- [ ] Verify Mermaid diagrams render (if present).
-- [ ] Verify background decoration appears at page bottom.
+- [x] Verify H2 gradient background renders correctly.
+- [x] Verify brand colors match (`#0054a6`, `#0097a7`).
+- [x] Verify page breaks don't split headings from their content.
+- [x] Verify Mermaid diagrams render (if present).
+- [x] Verify background decoration appears at page bottom.
 - [ ] Test installed CLI: `improving-pdf test/sample-input.md -o test/result.pdf`.
 - [ ] Test self-bootstrap flow: fresh venv → SKILL triggers install → generates PDF.
 - [ ] Verify Playwright output matches manual Chrome Print to PDF.
