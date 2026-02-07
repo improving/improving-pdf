@@ -153,7 +153,7 @@ Create the `/release` Claude command (`.windsurf/workflows/release.md`):
 - [x] Test installed CLI: `improving-pdf test/sample-input.md -o test/result.pdf`.
 - [x] Test self-bootstrap flow: fresh venv → SKILL triggers install → generates PDF.
 - [x] Verify Playwright output matches manual Chrome Print to PDF.
-- [ ] Test `/release` workflow: bump a patch version, verify tag and GitHub release are created.
+- [x] Test `/release` workflow: bump a patch version, verify tag and GitHub release are created.
 
 ---
 
