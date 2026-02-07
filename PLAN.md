@@ -143,7 +143,7 @@ Create the `/release` Claude command (`.windsurf/workflows/release.md`):
 ### Phase 8: Testing & Validation
 
 - [x] Create `test/sample-input.md` with the sample content from `loadSampleContent()` in the current file.
-- [ ] Generate PDF from sample content and compare side-by-side with current tool's output.
+- [x] Generate PDF from sample content and compare side-by-side with current tool's output.
 - [ ] Verify header and footer appear on every printed page.
 - [ ] Verify H2 gradient background renders correctly.
 - [ ] Verify brand colors match (`#0054a6`, `#0097a7`).
