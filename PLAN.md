@@ -118,7 +118,7 @@ Package the tool for `pip install` from GitHub:
 - [x] Verify CLI works after install: `improving-pdf input.html -o output.pdf`.
 - [x] Add self-bootstrapping logic to SKILL: `pip show improving-pdf-tool > /dev/null 2>&1 || pip install git+https://github.com/improving/improving-pdf.git`.
 - [x] Confirm Chromium auto-install triggers on first run.
-- [ ] Tag initial release for reproducible installs (`pip install ...@v1.0.0`).
+- [x] Tag initial release for reproducible installs (`pip install ...@v1.0.0`).
 
 ### Phase 6: Handle Edge Cases & Refinements
 
