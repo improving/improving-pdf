@@ -126,7 +126,7 @@ Package the tool for `pip install` from GitHub:
 - [x] Handle no-content fallback: SKILL prompts for Markdown if none provided.
 - [x] Handle `![alt](url)` image references in Markdown → `<img>` tags; note external URLs must be accessible.
 - [x] Optional: support TOC generation from headings if user requests.
-- [ ] Ensure SKILL handles being invoked repeatedly in one conversation.
+- [x] Ensure SKILL handles being invoked repeatedly in one conversation.
 
 ### Phase 7: Release Automation
 

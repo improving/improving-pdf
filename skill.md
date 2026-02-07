@@ -136,3 +136,11 @@ After generating the PDF, provide the user with:
    - Does the Markdown contain syntax errors?
    - Are external image URLs accessible?
    - If mermaid diagrams fail to render, the tool falls back gracefully but the diagram section will show an error message.
+
+## Multiple Documents in One Conversation
+
+This SKILL can be invoked multiple times in a single conversation. Each invocation is independent:
+
+- You do **not** need to re-check the tool installation after the first successful check.
+- Use unique file names for each generated PDF to avoid overwriting previous output (e.g., `case-study.pdf`, `proposal.pdf`).
+- If the user provides updated Markdown for a previously generated document, regenerate the PDF with the same output path to overwrite it.
