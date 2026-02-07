@@ -127,6 +127,32 @@ def _render_template(html_content: str, title: str = "Document") -> str:
     return result
 
 
+def _convert_mermaid_blocks(html: str) -> str:
+    """Convert fenced mermaid code blocks to mermaid div elements.
+
+    The markdown library renders ```mermaid blocks as
+    <pre><code class="language-mermaid">...</code></pre>.
+    Mermaid.js requires <div class="mermaid" id="...">...</div>.
+    """
+    counter = 0
+
+    def _replace(match):
+        nonlocal counter
+        counter += 1
+        code = match.group(1)
+        # Unescape HTML entities that the markdown library may have applied
+        code = code.replace("&lt;", "<").replace("&gt;", ">")
+        code = code.replace("&amp;", "&").replace("&quot;", '"')
+        return f'<div class="mermaid" id="mermaid-{counter}">{code}</div>'
+
+    return re.sub(
+        r'<pre><code class="language-mermaid">(.*?)</code></pre>',
+        _replace,
+        html,
+        flags=re.DOTALL,
+    )
+
+
 def _markdown_to_html(markdown_text: str) -> str:
     """Convert Markdown text to HTML using the 'markdown' library.
 
@@ -153,18 +179,18 @@ def _apply_heading_classes(html: str) -> str:
     - First <h1> gets class="doc-title"
     - First <h2> immediately after the first <h1> gets class="doc-subtitle"
     """
-    # Add doc-title to the first h1
+    # Add doc-title to the first h1 (may have attributes like id from toc extension)
     html = re.sub(
-        r"<h1>(.*?)</h1>",
-        r'<h1 class="doc-title">\1</h1>',
+        r"<h1([^>]*)>(.*?)</h1>",
+        r'<h1\1 class="doc-title">\2</h1>',
         html,
         count=1,
     )
 
     # Add doc-subtitle to the first h2 that immediately follows the doc-title h1
     html = re.sub(
-        r'(<h1 class="doc-title">.*?</h1>\s*)<h2>(.*?)</h2>',
-        r'\1<h2 class="doc-subtitle">\2</h2>',
+        r'(<h1[^>]*class="doc-title"[^>]*>.*?</h1>\s*)<h2([^>]*)>(.*?)</h2>',
+        r'\1<h2\2 class="doc-subtitle">\3</h2>',
         html,
         count=1,
         flags=re.DOTALL,
@@ -198,6 +224,9 @@ def markdown_to_pdf(md_path: str, pdf_path: str) -> str:
 
     # Convert markdown to HTML
     html_content = _markdown_to_html(markdown_text)
+
+    # Convert fenced mermaid code blocks to mermaid div elements
+    html_content = _convert_mermaid_blocks(html_content)
 
     # Apply heading classes (doc-title, doc-subtitle)
     html_content = _apply_heading_classes(html_content)
