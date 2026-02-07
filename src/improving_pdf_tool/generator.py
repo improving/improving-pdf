@@ -1,6 +1,9 @@
 """Core HTML-to-PDF generation logic using Playwright's headless Chromium."""
 
+import importlib.resources
 import os
+import re
+import tempfile
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
@@ -32,6 +35,160 @@ def _wait_for_mermaid(page) -> None:
             # If a specific diagram times out, fall back to a general wait
             page.wait_for_timeout(2000)
             break
+
+
+MERMAID_SCRIPT_BLOCK = """<script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+        startOnLoad: false,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: { useMaxWidth: true, htmlLabels: true },
+        sequence: { useMaxWidth: true }
+    });
+    async function renderAll() {
+        for (const div of document.querySelectorAll('.mermaid:not([data-processed])')) {
+            try {
+                const { svg } = await mermaid.render(div.id + '-svg', div.textContent);
+                div.innerHTML = svg;
+                div.setAttribute('data-processed', 'true');
+            } catch (e) {
+                div.innerHTML = '<div style="color:red;">Diagram error: ' + e.message + '</div>';
+            }
+        }
+    }
+    renderAll();
+</script>"""
+
+
+def _load_template() -> str:
+    """Load the HTML template from the package."""
+    ref = importlib.resources.files("improving_pdf_tool").joinpath("template.html")
+    return ref.read_text(encoding="utf-8")
+
+
+def _render_template(html_content: str, title: str = "Document") -> str:
+    """Render the branded HTML template with the given content.
+
+    Replaces all {{PLACEHOLDER}} tokens in the template with actual values:
+    brand images (base64), content, title, and optional mermaid script.
+    """
+    from improving_pdf_tool.assets.images import (
+        BG_DECORATION_IMG,
+        FOOTER_IMG,
+        H2_BACKGROUND_IMG,
+        HEADER_IMG,
+    )
+
+    template = _load_template()
+
+    has_mermaid = '<div class="mermaid"' in html_content
+    mermaid_script = MERMAID_SCRIPT_BLOCK if has_mermaid else ""
+
+    result = template.replace("{{TITLE}}", title)
+    result = result.replace("{{CONTENT}}", html_content)
+    result = result.replace("{{HEADER_IMG}}", HEADER_IMG)
+    result = result.replace("{{FOOTER_IMG}}", FOOTER_IMG)
+    result = result.replace("{{H2_BACKGROUND_IMG}}", H2_BACKGROUND_IMG)
+    result = result.replace("{{BG_DECORATION_IMG}}", BG_DECORATION_IMG)
+    result = result.replace("{{MERMAID_SCRIPT}}", mermaid_script)
+
+    return result
+
+
+def _markdown_to_html(markdown_text: str) -> str:
+    """Convert Markdown text to HTML.
+
+    Uses the 'markdown' library if available, otherwise falls back to a
+    minimal conversion for basic elements.
+    """
+    try:
+        import markdown
+        return markdown.markdown(
+            markdown_text,
+            extensions=["tables", "fenced_code", "codehilite", "toc"],
+        )
+    except ImportError:
+        raise ImportError(
+            "The 'markdown' package is required for .md input. "
+            "Install it with: pip install markdown"
+        )
+
+
+def _apply_heading_classes(html: str) -> str:
+    """Apply doc-title and doc-subtitle classes to the first H1 and first H2.
+
+    Mirrors the heading classification logic from the original pdf-creation.html:
+    - First <h1> gets class="doc-title"
+    - First <h2> immediately after the first <h1> gets class="doc-subtitle"
+    """
+    # Add doc-title to the first h1
+    html = re.sub(
+        r"<h1>(.*?)</h1>",
+        r'<h1 class="doc-title">\1</h1>',
+        html,
+        count=1,
+    )
+
+    # Add doc-subtitle to the first h2 that immediately follows the doc-title h1
+    html = re.sub(
+        r'(<h1 class="doc-title">.*?</h1>\s*)<h2>(.*?)</h2>',
+        r'\1<h2 class="doc-subtitle">\2</h2>',
+        html,
+        count=1,
+        flags=re.DOTALL,
+    )
+
+    return html
+
+
+def markdown_to_pdf(md_path: str, pdf_path: str) -> str:
+    """Convert a Markdown file to a branded PDF.
+
+    Reads the Markdown file, converts to HTML, injects into the branded
+    template, writes a temporary HTML file, and renders to PDF.
+
+    Args:
+        md_path: Path to the input Markdown file.
+        pdf_path: Path where the output PDF will be written.
+
+    Returns:
+        The absolute path to the generated PDF file.
+    """
+    md_path = str(Path(md_path).resolve())
+    if not os.path.isfile(md_path):
+        raise FileNotFoundError(f"Markdown file not found: {md_path}")
+
+    with open(md_path, "r", encoding="utf-8") as f:
+        markdown_text = f.read()
+
+    # Strip HTML comments
+    markdown_text = re.sub(r"<!--[\s\S]*?-->", "", markdown_text)
+
+    # Convert markdown to HTML
+    html_content = _markdown_to_html(markdown_text)
+
+    # Apply heading classes (doc-title, doc-subtitle)
+    html_content = _apply_heading_classes(html_content)
+
+    # Extract title from first H1 if present
+    title_match = re.search(r'<h1[^>]*>(.*?)</h1>', html_content)
+    title = title_match.group(1) if title_match else "Document"
+
+    # Render into branded template
+    full_html = _render_template(html_content, title=title)
+
+    # Write to temp file and convert to PDF
+    with tempfile.NamedTemporaryFile(
+        mode="w", suffix=".html", delete=False, encoding="utf-8"
+    ) as tmp:
+        tmp.write(full_html)
+        tmp_path = tmp.name
+
+    try:
+        return html_to_pdf(tmp_path, pdf_path)
+    finally:
+        os.unlink(tmp_path)
 
 
 def html_to_pdf(html_path: str, pdf_path: str) -> str:

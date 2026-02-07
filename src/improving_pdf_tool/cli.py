@@ -3,7 +3,7 @@
 import argparse
 import sys
 
-from improving_pdf_tool.generator import html_to_pdf
+from improving_pdf_tool.generator import html_to_pdf, markdown_to_pdf
 
 
 def main() -> None:
@@ -29,8 +29,14 @@ def main() -> None:
     if input_path.endswith((".html", ".htm")):
         result = html_to_pdf(input_path, output_path)
         print(f"PDF generated: {result}")
+    elif input_path.endswith((".md", ".markdown", ".txt")):
+        result = markdown_to_pdf(input_path, output_path)
+        print(f"PDF generated: {result}")
     else:
-        print(f"Error: Unsupported file type. Expected .html or .htm, got: {input_path}", file=sys.stderr)
+        print(
+            f"Error: Unsupported file type. Expected .html, .htm, .md, .markdown, or .txt, got: {input_path}",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
 
