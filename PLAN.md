@@ -94,7 +94,7 @@ Create the core `generator.py` and `cli.py` modules:
 
 Write `skill.md` — the Claude SKILL instruction file:
 
-- [ ] Define role: document formatter that produces branded HTML and invokes the Python tool for PDF.
+- [x] Define role: document formatter that produces branded HTML and invokes the Python tool for PDF.
 - [ ] Document Markdown → HTML conversion rules:
   - [ ] Standard elements: headings, paragraphs, lists, tables, code blocks, blockquotes, HR, links, images, bold, italic.
   - [ ] First `# H1` → `<h1 class="doc-title">`.
