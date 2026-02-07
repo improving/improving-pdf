@@ -265,9 +265,25 @@
     {{MERMAID_SCRIPT}}
 </head>
 <body>
-    <!-- Body structure will be added in subsequent steps -->
-    <div class="content">
-        {{CONTENT}}
+    <!-- Print Layout (table-based for repeating header, fixed footer) -->
+    <table class="print-table">
+        <thead>
+            <tr><td><img src="{{HEADER_IMG}}" alt="Header"></td></tr>
+        </thead>
+        <tfoot>
+            <tr><td class="print-spacer"></td></tr>
+        </tfoot>
+        <tbody>
+            <tr><td class="content print-content-cell content-wrapper" style="padding-left: 2.5rem; padding-right: 2.5rem; padding-top: 1.5rem; padding-bottom: 1.5rem;">{{CONTENT}}</td></tr>
+        </tbody>
+    </table>
+
+    <!-- Fixed footer appears at bottom of every printed page -->
+    <div class="print-footer">
+        <img src="{{FOOTER_IMG}}" alt="Footer">
     </div>
+
+    <!-- Background decoration for print (fixed at bottom of each page, under footer) -->
+    <div class="page-bg-decoration-print"></div>
 </body>
 </html>
