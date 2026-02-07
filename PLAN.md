@@ -77,7 +77,7 @@ Create a canonical HTML template that the SKILL instructs Claude to populate:
 - [x] Add conditional Mermaid CDN `<script>` tag (only when mermaid blocks are present).
 - [x] Create `<body>` with print-ready structure: `<table class="print-table">` with `<thead>` header image, `<tbody>` content, fixed footer, background decoration.
 - [x] Add screen preview styles (box shadow, centered page) so the file looks reasonable in a browser.
-- [ ] Convert all Tailwind utility classes to equivalent plain CSS.
+- [x] Convert all Tailwind utility classes to equivalent plain CSS.
 
 ### Phase 3: Build the Python PDF Tool
 
