@@ -104,17 +104,13 @@ The tool writes the PDF directly to the specified output path. Provide the user 
 
 ## Prerequisites & Self-Bootstrapping
 
-Before generating a PDF, ensure the `improving-pdf-tool` package is installed. Run this check at the start of every conversation where PDF generation is needed:
+Before generating a PDF, ensure the `improving-pdf-tool` package is installed and up to date. Run this at the start of every conversation where PDF generation is needed:
 
 ```bash
-pip show improving-pdf-tool > /dev/null 2>&1 || pip install git+https://github.com/improving/improving-pdf.git
+pip install --upgrade git+https://github.com/improving/improving-pdf.git
 ```
 
-On Windows (PowerShell):
-
-```powershell
-pip show improving-pdf-tool; if ($LASTEXITCODE -ne 0) { pip install git+https://github.com/improving/improving-pdf.git }
-```
+This is idempotent — it installs the package if missing, or upgrades to the latest version if already installed.
 
 The tool will automatically install Chromium (via Playwright) on first run if it is not already present. No additional browser setup is required.
 
