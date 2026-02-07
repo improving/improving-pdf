@@ -115,7 +115,7 @@ Package the tool for `pip install` from GitHub:
 - [x] Create `src/improving_pdf_tool/__init__.py` with `__version__`.
 - [x] Bundle brand assets (base64 images) and HTML template as package data.
 - [x] Verify install works: `pip install git+https://github.com/improving/improving-pdf.git`.
-- [ ] Verify CLI works after install: `improving-pdf input.html -o output.pdf`.
+- [x] Verify CLI works after install: `improving-pdf input.html -o output.pdf`.
 - [ ] Add self-bootstrapping logic to SKILL: `pip show improving-pdf-tool > /dev/null 2>&1 || pip install git+https://github.com/improving/improving-pdf.git`.
 - [ ] Confirm Chromium auto-install triggers on first run.
 - [ ] Tag initial release for reproducible installs (`pip install ...@v1.0.0`).
