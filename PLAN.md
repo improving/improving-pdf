@@ -65,7 +65,7 @@ The SKILL eliminates the client-side editor and runtime Markdown parsing. **Clau
 ### Phase 1: Prepare Brand Assets
 
 - [x] Base64-encode all four brand images (`new-header.png`, `new-footer.png`, `h2-background.png`, `bg-image.png`) as data-URIs for self-contained output.
-- [ ] Store these as constants in `src/improving_pdf_tool/assets/images.py`.
+- [x] Store these as constants in `src/improving_pdf_tool/assets/images.py`.
 
 ### Phase 2: Build the HTML Template
 
