@@ -117,3 +117,16 @@ If a specific version is needed:
 ```bash
 pip install git+https://github.com/improving/improving-pdf.git@v1.0.0
 ```
+
+## User-Facing Output Guidance
+
+After generating the PDF, provide the user with:
+
+1. **The path to the generated PDF** — e.g., "Your branded PDF has been saved to `C:\Users\...\document.pdf`."
+2. **A brief summary** of what was produced — e.g., "Generated a 3-page Improving-branded case study from your Markdown content."
+3. **Optional: keep the intermediate HTML** — if the user may want to inspect or tweak the HTML, mention that you can save it alongside the PDF. Only offer this if the user asks or if there were conversion issues.
+4. **Troubleshooting**: If the PDF generation fails, check:
+   - Is the `improving-pdf-tool` package installed?
+   - Does the Markdown contain syntax errors?
+   - Are external image URLs accessible?
+   - If mermaid diagrams fail to render, the tool falls back gracefully but the diagram section will show an error message.

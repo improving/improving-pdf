@@ -105,7 +105,7 @@ Write `skill.md` — the Claude SKILL instruction file:
 - [x] Document template assembly: insert converted HTML into the template.
 - [x] Document output format: save HTML to disk, invoke `improving-pdf` to produce the PDF.
 - [x] Document self-bootstrapping: check for package, `pip install` from GitHub if missing.
-- [ ] Provide user-facing output guidance: path to generated PDF, optionally keep intermediate HTML.
+- [x] Provide user-facing output guidance: path to generated PDF, optionally keep intermediate HTML.
 
 ### Phase 5: Package as Installable Python Tool
 
