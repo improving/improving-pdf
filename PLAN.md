@@ -95,13 +95,13 @@ Create the core `generator.py` and `cli.py` modules:
 Write `skill.md` — the Claude SKILL instruction file:
 
 - [x] Define role: document formatter that produces branded HTML and invokes the Python tool for PDF.
-- [ ] Document Markdown → HTML conversion rules:
-  - [ ] Standard elements: headings, paragraphs, lists, tables, code blocks, blockquotes, HR, links, images, bold, italic.
-  - [ ] First `# H1` → `<h1 class="doc-title">`.
-  - [ ] First `## H2` immediately after H1 → `<h2 class="doc-subtitle">`.
-  - [ ] All other `## H2` → standard section header (gradient background via CSS).
-  - [ ] Mermaid fenced code blocks → `<div class="mermaid">` with unique IDs; include mermaid.js CDN + init script.
-  - [ ] Strip HTML comments from Markdown.
+- [x] Document Markdown → HTML conversion rules:
+  - [x] Standard elements: headings, paragraphs, lists, tables, code blocks, blockquotes, HR, links, images, bold, italic.
+  - [x] First `# H1` → `<h1 class="doc-title">`.
+  - [x] First `## H2` immediately after H1 → `<h2 class="doc-subtitle">`.
+  - [x] All other `## H2` → standard section header (gradient background via CSS).
+  - [x] Mermaid fenced code blocks → `<div class="mermaid">` with unique IDs; include mermaid.js CDN + init script.
+  - [x] Strip HTML comments from Markdown.
 - [ ] Document template assembly: insert converted HTML into the template.
 - [ ] Document output format: save HTML to disk, invoke `improving-pdf` to produce the PDF.
 - [ ] Document self-bootstrapping: check for package, `pip install` from GitHub if missing.
