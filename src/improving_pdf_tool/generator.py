@@ -14,27 +14,33 @@ from playwright.sync_api import sync_playwright
 MERMAID_TIMEOUT_MS = 10000
 
 
-def _ensure_chromium_installed() -> None:
-    """Check if Playwright's Chromium is installed; install it if missing.
+_chromium_checked = False
 
-    Runs 'playwright install chromium' as a subprocess if the browser
-    executable cannot be found.
+
+def _ensure_chromium_installed() -> None:
+    """Ensure Playwright's Chromium browser is installed.
+
+    On the first call, runs 'playwright install chromium' which is
+    idempotent — it's a no-op if already installed, and installs
+    if missing. Subsequent calls within the same process are skipped.
     """
+    global _chromium_checked
+    if _chromium_checked:
+        return
+
     try:
-        from playwright._impl._driver import compute_driver_executable
-        driver = compute_driver_executable()
-        result = subprocess.run(
-            [str(driver), "install", "--dry-run", "chromium"],
-            capture_output=True, text=True,
+        subprocess.run(
+            [sys.executable, "-m", "playwright", "install", "chromium"],
+            check=True,
+            capture_output=True,
         )
-        if result.returncode != 0:
-            raise FileNotFoundError
-    except Exception:
-        print("Chromium not found. Installing via Playwright...", file=sys.stderr)
-        subprocess.check_call(
-            [sys.executable, "-m", "playwright", "install", "chromium"]
+    except subprocess.CalledProcessError as exc:
+        print(
+            f"Warning: Failed to verify/install Chromium: {exc}",
+            file=sys.stderr,
         )
-        print("Chromium installed successfully.", file=sys.stderr)
+
+    _chromium_checked = True
 
 
 def _wait_for_mermaid(page) -> None:
@@ -122,22 +128,22 @@ def _render_template(html_content: str, title: str = "Document") -> str:
 
 
 def _markdown_to_html(markdown_text: str) -> str:
-    """Convert Markdown text to HTML.
+    """Convert Markdown text to HTML using the 'markdown' library.
 
-    Uses the 'markdown' library if available, otherwise falls back to a
-    minimal conversion for basic elements.
+    Raises ImportError if the 'markdown' package is not installed.
     """
     try:
         import markdown
-        return markdown.markdown(
-            markdown_text,
-            extensions=["tables", "fenced_code", "codehilite", "toc"],
-        )
     except ImportError:
         raise ImportError(
             "The 'markdown' package is required for .md input. "
             "Install it with: pip install markdown"
         )
+
+    return markdown.markdown(
+        markdown_text,
+        extensions=["tables", "fenced_code", "toc"],
+    )
 
 
 def _apply_heading_classes(html: str) -> str:
