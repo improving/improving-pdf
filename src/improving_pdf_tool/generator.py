@@ -57,7 +57,12 @@ def html_to_pdf(html_path: str, pdf_path: str) -> str:
         page = browser.new_page()
         page.goto(file_url, wait_until="networkidle")
         _wait_for_mermaid(page)
-        page.pdf(path=pdf_path)
+        page.pdf(
+            path=pdf_path,
+            format="Letter",
+            print_background=True,
+            margin={"top": "0", "right": "0", "bottom": "0", "left": "0"},
+        )
         browser.close()
 
     return pdf_path
