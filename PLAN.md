@@ -144,7 +144,7 @@ Create the `/release` Claude command (`.windsurf/workflows/release.md`):
 
 - [x] Create `test/sample-input.md` with the sample content from `loadSampleContent()` in the current file.
 - [x] Generate PDF from sample content and compare side-by-side with current tool's output.
-- [ ] Verify header and footer appear on every printed page.
+- [x] Verify header and footer appear on every printed page.
 - [ ] Verify H2 gradient background renders correctly.
 - [ ] Verify brand colors match (`#0054a6`, `#0097a7`).
 - [ ] Verify page breaks don't split headings from their content.
