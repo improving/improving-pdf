@@ -54,6 +54,10 @@ If the Markdown contains fenced code blocks with the `mermaid` language identifi
 
 Strip all HTML comments (`<!-- ... -->`) from the Markdown before conversion. These are authoring notes and should not appear in the output.
 
+### Table of Contents (Optional)
+
+If the user requests a table of contents, insert `[TOC]` on its own line in the Markdown before conversion. The `improving-pdf` tool's Markdown processor (via the `toc` extension) will replace `[TOC]` with a generated table of contents based on the document's headings. Only include this if the user explicitly requests it.
+
 ## Template Assembly
 
 The `improving-pdf` tool handles template assembly automatically when given a `.md` file. However, if you are producing a standalone `.html` file (e.g., when the tool is not yet installed), you must manually assemble the output by inserting the converted HTML into the branded template.

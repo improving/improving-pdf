@@ -125,7 +125,7 @@ Package the tool for `pip install` from GitHub:
 - [x] Verify page-break rules for long documents: `page-break-inside: avoid` on paragraphs, list items, tables, code blocks; `page-break-after: avoid` on headings.
 - [x] Handle no-content fallback: SKILL prompts for Markdown if none provided.
 - [x] Handle `![alt](url)` image references in Markdown → `<img>` tags; note external URLs must be accessible.
-- [ ] Optional: support TOC generation from headings if user requests.
+- [x] Optional: support TOC generation from headings if user requests.
 - [ ] Ensure SKILL handles being invoked repeatedly in one conversation.
 
 ### Phase 7: Release Automation
