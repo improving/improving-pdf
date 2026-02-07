@@ -136,7 +136,7 @@ Create the `/release` Claude command (`.windsurf/workflows/release.md`):
 - [x] Verify workflow prompts for bump type (`major`, `minor`, `patch`).
 - [x] Verify workflow reads current version from `src/improving_pdf_tool/__init__.py`.
 - [x] Verify workflow updates version in both `__init__.py` and `pyproject.toml`.
-- [ ] Verify workflow commits, tags, pushes, and creates GitHub release via `gh`.
+- [x] Verify workflow commits, tags, pushes, and creates GitHub release via `gh`.
 - [ ] Verify workflow prints install command for new version.
 - [ ] Verify workflow reminds to update pinned version in `skill.md` if applicable.
 
