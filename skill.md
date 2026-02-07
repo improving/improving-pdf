@@ -51,3 +51,21 @@ If the Markdown contains fenced code blocks with the `mermaid` language identifi
 ### HTML Comment Stripping
 
 Strip all HTML comments (`<!-- ... -->`) from the Markdown before conversion. These are authoring notes and should not appear in the output.
+
+## Template Assembly
+
+The `improving-pdf` tool handles template assembly automatically when given a `.md` file. However, if you are producing a standalone `.html` file (e.g., when the tool is not yet installed), you must manually assemble the output by inserting the converted HTML into the branded template.
+
+The template contains these placeholders that must be replaced:
+
+| Placeholder | Value |
+|---|---|
+| `{{TITLE}}` | Document title — extracted from the first `<h1>` text, or `"Document"` as fallback. |
+| `{{CONTENT}}` | The full converted HTML content. Appears in both screen preview and print layout sections. |
+| `{{HEADER_IMG}}` | Base64 data-URI for the Improving header image. |
+| `{{FOOTER_IMG}}` | Base64 data-URI for the Improving footer image. |
+| `{{H2_BACKGROUND_IMG}}` | Base64 data-URI for the H2 section header background. |
+| `{{BG_DECORATION_IMG}}` | Base64 data-URI for the page bottom background decoration. |
+| `{{MERMAID_SCRIPT}}` | The mermaid.js `<script>` block if the content contains mermaid diagrams, or empty string if not. |
+
+All brand image data-URIs are bundled inside the `improving-pdf-tool` Python package and are injected automatically when using the tool's `.md` input mode.

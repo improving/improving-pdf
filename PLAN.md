@@ -102,7 +102,7 @@ Write `skill.md` — the Claude SKILL instruction file:
   - [x] All other `## H2` → standard section header (gradient background via CSS).
   - [x] Mermaid fenced code blocks → `<div class="mermaid">` with unique IDs; include mermaid.js CDN + init script.
   - [x] Strip HTML comments from Markdown.
-- [ ] Document template assembly: insert converted HTML into the template.
+- [x] Document template assembly: insert converted HTML into the template.
 - [ ] Document output format: save HTML to disk, invoke `improving-pdf` to produce the PDF.
 - [ ] Document self-bootstrapping: check for package, `pip install` from GitHub if missing.
 - [ ] Provide user-facing output guidance: path to generated PDF, optionally keep intermediate HTML.
