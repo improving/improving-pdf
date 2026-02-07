@@ -182,6 +182,84 @@
             max-width: 100%;
             height: auto;
         }
+
+        /* Print styles */
+        @media print {
+            @page {
+                size: letter;
+                margin: 0;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* Header repeats via table thead */
+            .print-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            .print-table thead { display: table-header-group; }
+            .print-table tfoot { display: table-footer-group; }
+            .print-spacer { height: 50px; }
+            .print-table tbody { display: table-row-group; }
+            .print-table thead img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+
+            /* Fixed footer at bottom of every printed page */
+            .print-footer {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+            }
+            .print-footer img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+
+            /* Add padding to content cell */
+            .print-content-cell {
+                padding-top: 24px !important;
+            }
+
+            /* Ensure thead cells have bottom spacing so content doesn't touch header */
+            .print-table thead td {
+                padding-bottom: 20px;
+            }
+
+            /* Prevent breaks inside elements */
+            .content h2, .content h3, .content h4 { page-break-after: avoid; }
+            .content p, .content li { page-break-inside: avoid; }
+            .content table { page-break-inside: avoid; }
+            .content pre { page-break-inside: avoid; }
+
+            /* Hide screen-only elements */
+            .screen-page { display: none; }
+
+            /* Show print elements */
+            .print-table { display: table; }
+            .print-footer { display: block; }
+
+            /* Background decoration fixed at bottom of each page */
+            .page-bg-decoration-print {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 200px;
+                background-repeat: repeat-x;
+                background-position: left bottom;
+                background-size: auto 100%;
+                opacity: 0.5;
+            }
+        }
     </style>
 </head>
 <body>
