@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Study - Improving</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: false,
+            theme: 'default',
+            securityLevel: 'loose',
+            c4: { diagramMarginY: 20, useMaxWidth: true },
+            flowchart: { useMaxWidth: true, htmlLabels: true },
+            sequence: { useMaxWidth: true }
+        });
+        window.mermaid = mermaid;
+    </script>
+    <style>
+        :root {
+            --improving-blue: #0054a6;
+            --improving-teal: #0097a7;
+            --improving-light-blue: #e8f4fc;
+        }
+
+        /* Print styles */
+        @media print {
+            @page {
+                size: letter;
+                margin: 0;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .no-print { display: none !important; }
+
+            /* Header repeats via table thead */
+            .print-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            .print-table thead { display: table-header-group; }
+            .print-table tfoot { display: table-footer-group; } /* Spacer that repeats on each page */
+            .print-spacer { height: 50px; } /* Invisible spacer to prevent content from reaching footer */
+            .print-table tbody { display: table-row-group; }
+            .print-table thead img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+
+            /* Fixed footer at bottom of every printed page */
+            .print-footer {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+            }
+            .print-footer img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+
+            /* Add padding to content cell */
+            .print-content-cell {
+                padding-top: 24px !important; /* Add top padding after header */
+            }
+
+            /* Ensure thead cells have bottom spacing so content doesn't touch header */
+            .print-table thead td {
+                padding-bottom: 20px;
+            }
+
+            /* Fixed footer at true bottom of each page */
+            .print-footer {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+            }
+
+            /* Prevent breaks inside elements */
+            .content h2, .content h3, .content h4 { page-break-after: avoid; }
+            .content p, .content li { page-break-inside: avoid; }
+            .content table { page-break-inside: avoid; }
+            .content pre { page-break-inside: avoid; }
+        }
+
+        @media screen {
+            .screen-page {
+                box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+                margin-bottom: 2rem;
+                background: white;
+                position: relative;
+                overflow: hidden;
+            }
+            .print-table { display: none; }
+            .print-footer { display: none; }
+            .page-bg-decoration-print { display: none; }
+        }
+
+        @media print {
+            .screen-page { display: none; }
+            .print-table { display: table; }
+            .print-footer { display: block; }
+        }
+
+        /* Background image decoration - tiles horizontally at bottom, behind footer */
+        .page-bg-decoration {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background-image: url('images/bg-image.png');
+            background-repeat: repeat-x;
+            background-position: left bottom;
+            background-size: auto 100%;
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Footer sits on top of background decoration */
+        .page-footer {
+            position: relative;
+            z-index: 2;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 3;
+        }
+
+        /* Print: background decoration fixed at bottom of each page */
+        @media print {
+            .page-bg-decoration-print {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 200px;
+                background-image: url('images/bg-image.png');
+                background-repeat: repeat-x;
+                background-position: left bottom;
+                background-size: auto 100%;
+                opacity: 0.5;
+            }
+        }
+
+        /* Base H1 style (fallback) */
+        .content h1 {
+            color: var(--improving-blue);
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin: 0 0 1rem 0;
+        }
+
+        /* Document title (H1) - large bold blue */
+        .content .doc-title {
+            color: var(--improving-blue);
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin: 0 0 0.25rem 0;
+            text-transform: none;
+        }
+
+        /* Subtitle (first H2 after H1) - teal tagline, overrides block styling */
+        .content .doc-subtitle {
+            color: var(--improving-teal) !important;
+            font-size: 1.25rem !important;
+            font-weight: 400 !important;
+            margin: 0 0 1.5rem 0 !important;
+            text-transform: none !important;
+            background: none !important;
+            background-image: none !important;
+            padding: 0 !important;
+            letter-spacing: normal !important;
+        }
+
+        /* Section headers (H2) - gradient background image, stretched horizontally, tiled vertically */
+        .content h2 {
+            position: relative;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            margin: 1.5rem 0 0.75rem 0;
+            padding: 0.9rem 1.125rem 0.9rem 1.125rem;
+            background-image: url('images/h2-background.png');
+            background-repeat: repeat-y;
+            background-size: 100% auto;
+            background-position: left top;
+        }
+
+        .content h3 { color: var(--improving-teal); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-top: 1.25rem; margin-bottom: 0.4rem; }
+        .content h4 { color: #444; font-size: 0.75rem; font-weight: 700; margin-top: 1rem; margin-bottom: 0.3rem; }
+        .content p { color: #444; font-size: 0.75rem; line-height: 1.7; margin-bottom: 0.75rem; text-align: left; }
+        .content ul, .content ol { margin-left: 1rem; margin-bottom: 0.75rem; }
+        .content li { color: #444; font-size: 0.75rem; line-height: 1.6; margin-bottom: 0.4rem; }
+        .content li strong { color: #333; }
+        .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.7rem; }
+        .content th { background-color: var(--improving-blue); color: white; padding: 0.5rem; text-align: left; font-weight: 600; }
+        .content td { padding: 0.4rem 0.5rem; border-bottom: 1px solid #e5e5e5; color: #444; }
+        .content tr:nth-child(even) { background-color: #f9f9f9; }
+        .content code { background-color: #f4f4f4; padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 0.7rem; }
+        .content pre { background-color: #f4f4f4; padding: 0.75rem; border-radius: 4px; overflow-x: auto; font-size: 0.65rem; margin: 0.75rem 0; }
+        .content pre code { background: none; padding: 0; }
+        .content blockquote { border-left: 3px solid var(--improving-teal); padding-left: 1rem; margin: 1rem 0; color: #666; font-style: italic; }
+        .content hr { border: none; border-top: 1px solid #e5e5e5; margin: 1.5rem 0; }
+        .content .mermaid { margin: 1rem 0; text-align: center; }
+        .content .mermaid svg { max-width: 100%; height: auto; }
+
+        .editor-panel { background: #f8f9fa; border-right: 1px solid #e5e5e5; }
+        .markdown-input { font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 13px; line-height: 1.5; resize: none; }
+        .drop-zone { border: 2px dashed #ccc; transition: all 0.3s ease; }
+        .drop-zone.drag-over { border-color: var(--improving-teal); background-color: rgba(0,151,167,0.1); }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Editor Panel (screen only) -->
+    <div class="no-print fixed left-0 top-0 h-full w-1/2 editor-panel flex flex-col z-50">
+        <div class="bg-white border-b border-gray-200 px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-800">Markdown to Case Study</h2>
+                    <p class="text-sm text-gray-500">Drag & drop .md file or paste content</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="document.getElementById('file-input').click()" class="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200 border">Browse...</button>
+                    <button onclick="window.print()" class="px-3 py-1.5 text-sm bg-teal-600 text-white rounded hover:bg-teal-700">Print / Save PDF</button>
+                </div>
+            </div>
+            <input type="file" id="file-input" accept=".md,.markdown,.txt" class="hidden" onchange="handleFileSelect(event)">
+        </div>
+        <div id="drop-zone" class="flex-1 p-4 overflow-hidden drop-zone">
+            <textarea id="markdown-input" class="markdown-input w-full h-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white" placeholder="Drag and drop a .md file here, or paste markdown content..."></textarea>
+        </div>
+        <div class="bg-white border-t border-gray-200 px-4 py-2">
+            <div class="flex justify-between items-center">
+                <p class="text-sm text-gray-500">Use # for title, ## for subtitle (first only), then ## for section headers</p>
+                <button onclick="loadSampleContent()" class="px-2 py-1 text-xs bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Sample</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen Preview -->
+    <div class="no-print ml-[50%] p-4">
+        <div class="text-sm text-gray-500 mb-2 text-center">Preview (header/footer repeat on all printed pages)</div>
+        <div id="screen-preview" class="screen-page mx-auto" style="width: 8.5in;">
+            <img src="images/new-header.png" alt="Header" style="width: 100%; height: auto; display: block; position: relative; z-index: 2;">
+            <div class="content-wrapper">
+                <div class="px-10 py-6 content" id="screen-content"></div>
+            </div>
+            <img src="images/new-footer.png" alt="Footer" class="page-footer" style="width: 100%; height: auto; display: block;">
+            <div class="page-bg-decoration"></div>
+        </div>
+    </div>
+
+    <!-- Print Layout (table-based for repeating header, fixed footer) -->
+    <table class="print-table">
+        <thead>
+            <tr><td><img src="images/new-header.png" alt="Header"></td></tr>
+        </thead>
+        <tfoot>
+            <tr><td class="print-spacer"></td></tr>
+        </tfoot>
+        <tbody>
+            <tr><td class="px-10 py-6 content print-content-cell content-wrapper" id="print-content"></td></tr>
+        </tbody>
+    </table>
+
+    <!-- Fixed footer appears at bottom of every printed page -->
+    <div class="print-footer no-print-screen">
+        <img src="images/new-footer.png" alt="Footer">
+    </div>
+
+    <!-- Background decoration for print (fixed at bottom of each page, under footer) -->
+    <div class="page-bg-decoration-print"></div>
+
+    <script>
+        const markdownInput = document.getElementById('markdown-input');
+        const screenContent = document.getElementById('screen-content');
+        const printContent = document.getElementById('print-content');
+
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func(...args), wait);
+            };
+        }
+
+        const renderer = new marked.Renderer();
+        renderer.code = function(code, language) {
+            const codeText = typeof code === 'object' ? code.text : code;
+            const codeLang = typeof code === 'object' ? code.lang : language;
+
+            if (codeLang === 'mermaid' || (codeText && /^C4(Context|Container|Component|Deployment|Dynamic)/.test(codeText.trim()))) {
+                const id = 'mermaid-' + Math.random().toString(36).substr(2, 9);
+                return `<div class="mermaid" id="${id}">${codeText}</div>`;
+            }
+            const escaped = (codeText || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return `<pre><code class="language-${codeLang || ''}">${escaped}</code></pre>`;
+        };
+        marked.use({ renderer });
+
+        async function updatePreview() {
+            const rawMarkdown = markdownInput.value;
+
+            // Strip HTML comments
+            const cleanMarkdown = rawMarkdown.replace(/<!--[\s\S]*?-->/g, '');
+            let htmlContent = marked.parse(cleanMarkdown);
+
+            // Post-process to style H1 as title and first H2 after H1 as subtitle
+            htmlContent = styleHeadings(htmlContent);
+
+            const fullContent = htmlContent || '<p class="text-gray-400 italic">Enter markdown content...</p>';
+
+            // Update both screen and print content
+            screenContent.innerHTML = fullContent;
+            printContent.innerHTML = fullContent;
+
+            await renderMermaidDiagrams();
+        }
+
+        function styleHeadings(html) {
+            // Create a temporary container to manipulate the DOM
+            const temp = document.createElement('div');
+            temp.innerHTML = html;
+
+            // Find the first H1 and add the doc-title class
+            const firstH1 = temp.querySelector('h1');
+            if (firstH1) {
+                firstH1.classList.add('doc-title');
+
+                // Check if the IMMEDIATELY next sibling is an H2 (no content between)
+                // Must be the direct next element sibling, not separated by paragraphs etc.
+                let nextEl = firstH1.nextElementSibling;
+                if (nextEl && nextEl.tagName === 'H2') {
+                    // Also check there's no text nodes with content between them
+                    let hasContentBetween = false;
+                    let node = firstH1.nextSibling;
+                    while (node && node !== nextEl) {
+                        if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== '') {
+                            hasContentBetween = true;
+                            break;
+                        }
+                        node = node.nextSibling;
+                    }
+                    if (!hasContentBetween) {
+                        nextEl.classList.add('doc-subtitle');
+                    }
+                }
+            }
+
+            return temp.innerHTML;
+        }
+
+        async function renderMermaidDiagrams() {
+            if (typeof window.mermaid === 'undefined') { setTimeout(renderMermaidDiagrams, 100); return; }
+            for (const div of document.querySelectorAll('.mermaid:not([data-processed])')) {
+                try {
+                    const { svg } = await window.mermaid.render(div.id + '-svg', div.textContent);
+                    div.innerHTML = svg;
+                    div.setAttribute('data-processed', 'true');
+                } catch (e) {
+                    div.innerHTML = `<div class="text-red-500 text-sm p-2 bg-red-50 rounded">Diagram error: ${e.message}</div>`;
+                }
+            }
+        }
+
+        function handleFileSelect(event) {
+            if (event.target.files[0]) readFile(event.target.files[0]);
+        }
+
+        function readFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                markdownInput.value = e.target.result;
+                updatePreview();
+            };
+            reader.readAsText(file);
+        }
+
+        const dropZone = document.getElementById('drop-zone');
+        dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+        dropZone.addEventListener('dragleave', e => { e.preventDefault(); dropZone.classList.remove('drag-over'); });
+        dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.classList.remove('drag-over'); if (e.dataTransfer.files[0]) readFile(e.dataTransfer.files[0]); });
+        markdownInput.addEventListener('input', debounce(updatePreview, 500));
+
+        function loadSampleContent() {
+            markdownInput.value = `# Modern Microsoft App Development
+## Empowering Businesses To Adapt & Excel With Cloud-Native .NET Applications
+
+## Building Modern Solutions with .NET
+
+Organizations face an increasingly complex technological landscape that requires them to be agile, efficient and provide improved user experiences to their customers. Improving offers a tailored approach to modern Microsoft application development to help businesses stay ahead of the technology curve and to adapt with velocity to rapidly changing enterprise trends and needs.
+
+Our Microsoft application development service encompasses a range of expertise areas that includes application development, application modernization, platform engineering and AI.
+
+Our team of experts leverage the latest Microsoft platforms and technologies, such as Azure, .NET, and AI to deliver innovative, secure, and scalable on-premise and cloud-native applications. Improving's approach is tailored to meet the unique needs of each one of our public and private sector clients. With a focus on user experience, rapid time-to-market, real-time data and AI, our application development services help organizations thrive.
+
+## Pairing Artificial Intelligence with .NET
+
+Improving's .NET application development service provides unparalleled benefits for organizations seeking robust and scalable software solutions for their current and future needs. Leveraging the power of .NET, a versatile framework developed by Microsoft, and Azure OpenAI services, we efficiently develop applications that are fast, reliable, secure and easy to maintain. The applications that we have created for our clients using Microsoft's .NET Framework include:
+
+- Web Applications
+- Mobile Applications
+- IOT Applications
+- AI Applications
+
+## A Pathway to the Cloud with Azure
+
+In addition to utilizing Microsoft's robust and reliable .NET framework to build and modernize applications, we provide platform engineering services on Azure that ensures that your cloud-native applications are fast, secure, compliant, scalable, fault-tolerant and cost-effective. Running .NET applications on Azure offers organizations the benefits of scalability, high availability, global reach, seamless integration with Azure services, efficient DevOps and CI/CD capabilities, robust security and compliance measures and cost-effectiveness.
+
+By leveraging Azure's infrastructure and tools, organizations can easily scale their applications, ensure uninterrupted availability, reach a global audience, integrate with various Azure services, streamline development processes, enhance security, and optimize costs, ultimately enabling them to deliver reliable and innovative solutions to their customers and stakeholders.
+
+## Our Trusted Approach and Expertise
+
+Our customers across various industries in the US and Canada benefit from improved efficiency, enhanced performance, and reduced costs as .NET's modular, component-based architecture enables rapid development and deployment, with fewer lines of code. With its cross-platform capabilities, .NET applications work seamlessly on different operating systems, further broadening your business reach.
+
+Trusting Improving with your .NET application development needs translates to a strategic advantage, as we combine our expertise with the robustness of .NET to create tailored software solutions that drive your business forward. We have expertise in developing .NET applications for clients across various industries, from Energy to the Public Sector.`;
+
+            updatePreview();
+        }
+
+        updatePreview();
+    </script>
+</body>
+</html>
