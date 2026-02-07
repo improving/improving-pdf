@@ -32,6 +32,7 @@ Convert all standard Markdown elements to their HTML equivalents:
 - **Horizontal rules** (`---`) → `<hr>`
 - **Links** (`[text](url)`) → `<a href="url">text</a>`
 - **Images** (`![alt](url)`) → `<img src="url" alt="alt">`
+  - **Note**: External image URLs must be accessible from the machine running `improving-pdf`. The headless browser will fetch them during PDF rendering. If an image URL is unreachable, the image will appear broken in the PDF. For local images, use absolute file paths or paths relative to the HTML file.
 
 ### Heading Classification
 
