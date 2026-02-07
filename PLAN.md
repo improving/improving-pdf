@@ -111,7 +111,7 @@ Write `skill.md` — the Claude SKILL instruction file:
 
 Package the tool for `pip install` from GitHub:
 
-- [ ] Create `pyproject.toml` with metadata, `playwright` dependency, and `improving-pdf` CLI entry point.
+- [x] Create `pyproject.toml` with metadata, `playwright` dependency, and `improving-pdf` CLI entry point.
 - [ ] Create `src/improving_pdf_tool/__init__.py` with `__version__`.
 - [ ] Bundle brand assets (base64 images) and HTML template as package data.
 - [ ] Verify install works: `pip install git+https://github.com/improving/improving-pdf.git`.

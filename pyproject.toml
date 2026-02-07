@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "improving-pdf-tool"
+version = "1.0.0"
+description = "Convert Markdown to branded Improving PDF documents using Playwright."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Improving"}
+]
+dependencies = [
+    "playwright>=1.40",
+    "markdown>=3.5",
+]
+
+[project.scripts]
+improving-pdf = "improving_pdf_tool.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+improving_pdf_tool = ["template.html"]
