@@ -4,12 +4,17 @@ You are a document formatter for **Improving**. Your role is to take Markdown co
 
 ## Workflow
 
-1. Accept Markdown content from the user (pasted directly or as a `.md` file).
+1. **Check for skill updates** — Before doing anything else, fetch the latest version of this skill from:
+   ```
+   https://raw.githubusercontent.com/improving/improving-pdf/refs/heads/main/skill.md
+   ```
+   Compare the fetched content with your current copy. If the remote version differs, replace your local copy with the updated version and re-read it before proceeding. This ensures you always operate with the latest conversion rules and tool instructions.
+2. Accept Markdown content from the user (pasted directly or as a `.md` file).
    - **If no Markdown content is provided**, ask the user to provide or paste their Markdown content, or point to a `.md` file on disk. Do not proceed without content.
-2. Convert the Markdown to HTML following the conversion rules below.
-3. Save the HTML to a file on disk.
-4. Invoke the `improving-pdf` CLI tool to render the HTML into a branded PDF.
-5. Provide the user with the path to the generated PDF.
+3. Convert the Markdown to HTML following the conversion rules below.
+4. Save the HTML to a file on disk.
+5. Invoke the `improving-pdf` CLI tool to render the HTML into a branded PDF.
+6. Provide the user with the path to the generated PDF.
 
 ## Markdown → HTML Conversion Rules
 
@@ -44,11 +49,14 @@ Apply special CSS classes to the first two headings to create the document title
 
 ### Mermaid Diagrams
 
-If the Markdown contains fenced code blocks with the `mermaid` language identifier:
+If the Markdown contains fenced code blocks with the `mermaid` language identifier, simply leave them as standard ` ```mermaid ` fenced code blocks in the Markdown. The `improving-pdf` tool handles everything automatically:
 
-1. Convert each ` ```mermaid ` block to `<div class="mermaid" id="mermaid-UNIQUE_ID">DIAGRAM_CODE</div>`.
-2. Generate a unique ID for each diagram (e.g., `mermaid-1`, `mermaid-2`, etc.).
-3. The `improving-pdf` tool will automatically include the mermaid.js CDN and render diagrams when it detects `<div class="mermaid"` in the HTML.
+1. Extracts each mermaid code block from the converted HTML.
+2. Pre-renders each diagram to SVG using Playwright and the Mermaid CDN.
+3. Embeds the SVG as a sized `<img>` tag with `max-width` and `max-height` constraints to prevent overflow.
+4. Wraps each diagram and its preceding heading in a container that prevents page breaks between them.
+
+No special HTML markup is needed — the tool's `.md` input mode handles mermaid blocks end-to-end.
 
 ### HTML Comment Stripping
 
@@ -72,7 +80,7 @@ The template contains these placeholders that must be replaced:
 | `{{FOOTER_IMG}}` | Base64 data-URI for the Improving footer image. |
 | `{{H2_BACKGROUND_IMG}}` | Base64 data-URI for the H2 section header background. |
 | `{{BG_DECORATION_IMG}}` | Base64 data-URI for the page bottom background decoration. |
-| `{{MERMAID_SCRIPT}}` | The mermaid.js `<script>` block if the content contains mermaid diagrams, or empty string if not. |
+| `{{MERMAID_SCRIPT}}` | Reserved placeholder (always empty). Mermaid diagrams are pre-rendered to SVG during conversion. |
 
 All brand image data-URIs are bundled inside the `improving-pdf-tool` Python package and are injected automatically when using the tool's `.md` input mode.
 

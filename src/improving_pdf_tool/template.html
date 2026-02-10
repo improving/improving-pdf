@@ -173,14 +173,17 @@
             margin: 1.5rem 0;
         }
 
-        .content .mermaid {
+        .content .mermaid-figure {
             margin: 1rem 0;
-            text-align: center;
+            page-break-inside: avoid;
         }
 
-        .content .mermaid svg {
+        .content .mermaid-img {
             max-width: 100%;
-            height: auto;
+            max-height: 6in;
+            object-fit: contain;
+            display: block;
+            margin: 0.5rem auto;
         }
 
         /* Screen preview styles */
@@ -304,7 +307,7 @@
             }
 
             /* Prevent breaks inside elements */
-            .content h2, .content h3, .content h4 { page-break-after: avoid; }
+            .content h1, .content h2, .content h3, .content h4 { page-break-after: avoid; }
             .content p, .content li { page-break-inside: avoid; }
             .content table { page-break-inside: avoid; }
             .content pre { page-break-inside: avoid; }
