@@ -11,7 +11,7 @@ pip install git+https://github.com/improving/improving-pdf.git
 Or pin to a specific version:
 
 ```bash
-pip install git+https://github.com/improving/improving-pdf.git@v1.1.2
+pip install git+https://github.com/improving/improving-pdf.git@v1.2.0
 ```
 
 ## Usage

@@ -125,7 +125,7 @@ The tool will automatically install Chromium (via Playwright) on first run if it
 If a specific version is needed:
 
 ```bash
-pip install git+https://github.com/improving/improving-pdf.git@v1.0.0
+pip install git+https://github.com/improving/improving-pdf.git@v1.2.0
 ```
 
 ## User-Facing Output Guidance
