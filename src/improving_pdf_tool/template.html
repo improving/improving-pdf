@@ -173,6 +173,13 @@
             margin: 1.5rem 0;
         }
 
+        .content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0.75rem 0;
+        }
+
         .content .mermaid-figure {
             margin: 1rem 0;
             page-break-inside: avoid;
@@ -306,6 +313,10 @@
             .print-table thead td {
                 padding-bottom: 20px;
             }
+
+            /* Each H2 section starts on a new page */
+            .content h2 { page-break-before: always; }
+            .content h2.doc-subtitle { page-break-before: avoid; }
 
             /* Prevent breaks inside elements */
             .content h1, .content h2, .content h3, .content h4 { page-break-after: avoid; }

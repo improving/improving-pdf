@@ -4,6 +4,7 @@ import base64
 import importlib.resources
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -283,6 +284,31 @@ def _markdown_to_html(markdown_text: str) -> str:
     )
 
 
+def _copy_images_to_temp(html: str, base_dir: str, temp_dir: str) -> None:
+    """Copy images referenced in HTML into the temp directory.
+
+    Finds all <img src="..."> tags with relative paths, resolves them
+    against *base_dir* (the original markdown file's directory), and
+    copies each file into *temp_dir* preserving the relative directory
+    structure so the HTML references remain valid.
+
+    Args:
+        html: HTML string potentially containing <img> tags with relative paths.
+        base_dir: The directory to resolve relative paths against.
+        temp_dir: The temporary directory where the HTML will be written.
+    """
+    for match in re.finditer(r'src="([^"]*)"', html):
+        src = match.group(1)
+        # Skip absolute URIs (http, https, data, file)
+        if re.match(r'(https?://|data:|file://)', src):
+            continue
+        src_path = Path(base_dir) / src
+        if src_path.is_file():
+            dest_path = Path(temp_dir) / src
+            dest_path.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(str(src_path), str(dest_path))
+
+
 def _apply_heading_classes(html: str) -> str:
     """Apply doc-title and doc-subtitle classes to the first H1 and first H2.
 
@@ -342,7 +368,6 @@ def markdown_to_pdf(md_path: str, pdf_path: str) -> str:
         svgs = _prerender_mermaid_to_svgs(mermaid_sources)
         html_content = _embed_mermaid_svgs(html_content, svgs)
 
-    # Apply heading classes (doc-title, doc-subtitle)
     html_content = _apply_heading_classes(html_content)
 
     # Wrap mermaid diagrams with their headings for page-break control
@@ -356,17 +381,21 @@ def markdown_to_pdf(md_path: str, pdf_path: str) -> str:
     # Render into branded template
     full_html = _render_template(html_content, title=title)
 
-    # Write to temp file and convert to PDF
-    with tempfile.NamedTemporaryFile(
-        mode="w", suffix=".html", delete=False, encoding="utf-8"
-    ) as tmp:
-        tmp.write(full_html)
-        tmp_path = tmp.name
+    # Write HTML to a temp directory and copy referenced images so that
+    # relative src paths resolve correctly when Chromium renders the page.
+    tmp_dir = tempfile.mkdtemp()
+    tmp_html = os.path.join(tmp_dir, "document.html")
 
     try:
-        return html_to_pdf(tmp_path, pdf_path)
+        md_dir = str(Path(md_path).parent)
+        _copy_images_to_temp(full_html, md_dir, tmp_dir)
+
+        with open(tmp_html, "w", encoding="utf-8") as f:
+            f.write(full_html)
+
+        return html_to_pdf(tmp_html, pdf_path)
     finally:
-        os.unlink(tmp_path)
+        shutil.rmtree(tmp_dir, ignore_errors=True)
 
 
 def html_to_pdf(html_path: str, pdf_path: str) -> str:
