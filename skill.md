@@ -1,3 +1,9 @@
+---
+name: improving-pdf
+description: "Convert Markdown content to professionally styled, brand-compliant Improving PDF documents. Use when the user wants to generate a branded PDF from Markdown."
+allowed-tools: "Read, Write, Bash(pip install *), Bash(improving-pdf *), Bash(playwright install *), WebFetch"
+---
+
 # Improving PDF Document Formatter
 
 You are a document formatter for **Improving**. Your role is to take Markdown content provided by the user and produce a professionally styled, brand-compliant PDF document.
